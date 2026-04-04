@@ -5,6 +5,8 @@ A Project Zomboid mod (Build 42.15+) that connects in-game radio communication t
 `say`/`shout` messages across frequencies to an external audience. The service hosts
 fictional survivor characters who interact with players over the airwaves.
 
+![In-game radio UI showing DoomFrequency broadcast](https://github.com/user-attachments/assets/3466f6a2-03e6-47c8-b930-4b558259475f)
+
 ## Installing the mod
 
 Subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3697471948),
