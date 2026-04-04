@@ -2,26 +2,14 @@
 
 A Project Zomboid mod (Build 42.15+) that connects in-game radio communication to the
 [DoomFrequency](https://doomfrequency.fm) WebSocket service, letting players broadcast
-`say`/`shout` messages across frequencies to an external audience.
+`say`/`shout` messages across frequencies to an external audience. The service hosts
+fictional survivor characters who interact with players over the airwaves.
 
-## How it works
+## Installing the mod
 
-```
-[PZ client]                   [PZ server]                  [relayer]                 [service]
-  say / shout  →  broadcast  →  output file  →  tail  →  wss://ws.doomfrequency.fm
-                 command           ↑
-                              dispatch file  ←  write  ←  incoming messages
-                              (lock file guards concurrent access)
-```
-
-1. A player speaks (`say`/`shout`) while holding an active two-way radio.
-2. The client sends a `broadcast` command to the server with the message text.
-3. The server writes a `msg` line to an `output` file, including the frequency,
-   a SHA-256 hash of the username, and the in-game timestamp.
-4. The **relayer** tails the `output` file and forwards each line to the WebSocket service.
-5. The service can send `broadcast` commands back; the relayer appends them to a `dispatch` file.
-6. Every ten in-game minutes the server reads `dispatch` and injects matching messages into the
-   game's radio system via `DoomFrequencyBroadcaster`.
+Subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3697471948),
+or copy/symlink `DoomFrequency/Contents/` into your Project Zomboid mods directory, then enable
+**DoomFrequency** from the in-game mod manager.
 
 ## Repository layout
 
@@ -30,41 +18,46 @@ DoomFrequency/           PZ mod
 relayer/                 Python WebSocket bridge
 ```
 
-## Requirements
+## Roadmap
 
-- [just](https://github.com/casey/just)
-- **Mod**: Lua 5.4+, [luarocks](https://luarocks.org)
-- **Relayer**: Python 3.12+, [uv](https://github.com/astral-sh/uv)
+The following features are planned if there is enough community engagement:
 
-## Setup
+- **Quest system** — characters on the airwaves will offer missions that players can pursue in-game.
+- **Skill learning** — tune into the right frequency and specialized survivors will teach you
+  skills. For example, Silas Vance, a seasoned electrical engineer, may walk you through repairs
+  and circuit work that improve your in-game electrical skill.
 
-`.env` variables:
+## Running the relayer
 
-| Variable                | Description                         |
-|-------------------------|-------------------------------------|
-| `DOOMFREQUENCY_API_KEY` | API key used to obtain a JWT token. |
-Free — register at [doomfrequency.fm](https://doomfrequency.fm/).
+The relayer is a Python process that must stay running on your server — if it stops, messages stop being relayed.
 
-## Development
-
-### Mod (Lua)
+1. [Register for free](https://doomfrequency.fm/) to get an API key.
+2. On your server, run:
 
 ```sh
-just doom::install   # install busted into DoomFrequency/lua_modules/
-just doom::test      # run Lua unit tests
+DOOMFREQUENCY_API_KEY="your-api-key" pipx run doom-frequency-relayer \
+  {your-server-data-path}/mods/DoomFrequency/common
 ```
 
-### Relayer (Python)
+Keep this process alive (e.g. with `screen`, `tmux`, or a systemd service).
 
-```sh
-just relayer::sync   # uv sync
-just relayer::test   # pytest
-just relayer::lint   # ruff check
-just relayer::fmt    # ruff format
+## How it works
+
+```mermaid
+sequenceDiagram
+    participant C as PZ Client
+    participant S as PZ Server
+    participant R as Relayer
+    participant W as wss://ws.doomfrequency.fm
+
+    C->>S: broadcast command (say/shout via two-way radio)
+    S->>S: write msg line to output file<br/>(frequency, SHA-256 username, timestamp)
+    R->>S: tail output file
+    S-->>R: new msg line
+    R->>W: forward message over WebSocket
+
+    W-->>R: incoming broadcast command
+    R->>S: append to dispatch file<br/>(lock file guards concurrent access)
+    Note over S: every 10 in-game minutes
+    S->>S: read dispatch file →<br/>DoomFrequencyBroadcaster injects<br/>messages into radio system
 ```
-
-## Installing the mod
-
-Subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3697471948),
-or copy/symlink `DoomFrequency/Contents/` into your Project Zomboid mods directory, then enable
-**DoomFrequency** from the in-game mod manager.
