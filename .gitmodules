@@ -1,0 +1,3 @@
+[submodule "DoomFrequency/vendor/umbrella"]
+	path = DoomFrequency/vendor/umbrella
+	url = git@github.com:PZ-Umbrella/Umbrella.git
