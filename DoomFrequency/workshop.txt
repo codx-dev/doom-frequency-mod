@@ -1,5 +1,6 @@
 version=1
+id=3697471948
 title=DoomFrequency
 description=A radio communication enhancement.
-tags=radio
+tags=Build 42;Realistic
 visibility=public
