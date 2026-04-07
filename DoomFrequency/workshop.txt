@@ -2,5 +2,6 @@ version=1
 id=3697471948
 title=DoomFrequency
 description=A radio communication enhancement.
+description=https://github.com/codx-dev/doom-frequency-mod
 tags=Build 42;Realistic
 visibility=public
