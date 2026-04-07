@@ -1,9 +1,8 @@
 # DoomFrequency
 
-A Project Zomboid mod (Build 42.15+) that connects in-game radio communication to the
-[DoomFrequency](https://doomfrequency.fm) WebSocket service, letting players broadcast
-`say`/`shout` messages across frequencies to an external audience. The service hosts
-fictional survivor characters who interact with players over the airwaves.
+A Project Zomboid mod (Build 42.15+) that connects in-game radio communication to the [DoomFrequency](https://doomfrequency.fm) WebSocket service, letting players broadcast `say`/`shout` messages across frequencies to an external audience. The service hosts fictional survivor characters who interact with players over the airwaves.
+
+Currently, we have a single character, Silas Vance, available at 108Mhz every day, at 10am, 2pm, 7pm. If you have a good enough relationship with him, you can schedule a private conversation at some other frequency/day/time.
 
 https://github.com/user-attachments/assets/fd4ddb9a-fe35-4552-b5f7-47ed59b8f138
 
@@ -24,6 +23,7 @@ or copy/symlink `DoomFrequency/Contents/` into your Project Zomboid mods directo
 DOOMFREQUENCY_API_KEY="your-api-key" pipx run doom-frequency-relayer \
   {your-server-data-path}/mods/DoomFrequency/common
 ```
+
 
 #### indifferentbroccoli pz server example
 
