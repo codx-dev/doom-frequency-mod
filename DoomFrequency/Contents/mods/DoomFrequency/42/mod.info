@@ -1,6 +1,8 @@
 name=DoomFrequency
 id=DoomFrequency
 description=A radio communication enhancement.
+description=
+description=https://doomfrequency.fm/
 description=https://github.com/codx-dev/doom-frequency-mod
 poster=poster.png
 modversion=1.0.0
