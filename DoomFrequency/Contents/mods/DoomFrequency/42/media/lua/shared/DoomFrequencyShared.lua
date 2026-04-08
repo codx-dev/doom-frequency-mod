@@ -23,6 +23,25 @@ function DoomFrequencyColor:new(red, green, blue)
   return o
 end
 
+---@class DoomFrequencyMessage
+---@field msg string
+---@field color DoomFrequencyColor
+DoomFrequencyMessage = {}
+DoomFrequencyMessage.__index = DoomFrequencyMessage
+
+---Creates a new message instance
+---@param msg string
+---@param color DoomFrequencyColor|nil
+---@return DoomFrequencyMessage
+function DoomFrequencyMessage:new(msg, color)
+  local o = setmetatable({}, self)
+
+  o.msg = msg
+  o.color = color or DoomFrequencyColor:new()
+
+  return o
+end
+
 ---Inspects the player inventory for a broadcastable frequency available
 ---@param player IsoPlayer
 ---@return number|nil

@@ -1,8 +1,10 @@
 ---@class DoomFrequencyBroadcaster
+---@field pending table<number, DoomFrequencyMessage[]>
 DoomFrequencyBroadcaster          = DoomFrequencyBroadcaster or {}
 DoomFrequencyBroadcaster.script   = "DoomFrequencyScript"
 DoomFrequencyBroadcaster.bc       = "DoomFrequencyBroadcast"
-DoomFrequencyBroadcaster.channels = {}
+DoomFrequencyBroadcaster.channels = DoomFrequencyBroadcaster.channels or {}
+DoomFrequencyBroadcaster.pending  = DoomFrequencyBroadcaster.pending or {}
 
 --- Creates a new script with broadcast.
 --- @return RadioScript Broadcastable script.
@@ -98,24 +100,46 @@ function DoomFrequencyBroadcaster.broadcast(frequency, msg, color)
   local channel = DoomFrequencyBroadcaster.getAmateurChannel(frequencyNumber)
   if not channel then return false end
 
-  DoomFrequencyUtils.log("broadcast(" .. tostring(frequencyNumber) .. "): " .. msg)
+  local pending = DoomFrequencyMessage:new(msg, color)
 
-  local lineColor = color or DoomFrequencyColor:new()
-  local script = channel:getRadioScript(DoomFrequencyBroadcaster.script)
-  local broadcast = script:getBroadcastWithID(DoomFrequencyBroadcaster.bc)
-  local line = RadioLine.new(msg, lineColor.red, lineColor.green, lineColor.blue)
+  DoomFrequencyBroadcaster.pending[frequencyNumber] = DoomFrequencyBroadcaster.pending[frequencyNumber] or {}
 
-  --TODO overlapping messages will be overriden.
-  --Instead, should get last broadcasted line for the script, and append
-  broadcast:getLines():clear()
-  broadcast:AddRadioLine(line)
-  broadcast:resetLineCounter(true)
-
-  script:Reset()
-
-  channel:setActiveScript(DoomFrequencyBroadcaster.script, 0)
-  channel:LoadAiringBroadcast(DoomFrequencyBroadcaster.bc, 0)
-  channel:update()
+  table.insert(DoomFrequencyBroadcaster.pending[frequencyNumber], pending)
 
   return true
+end
+
+---Flushes the pending broadcasts
+function DoomFrequencyBroadcaster.flush()
+  --quick swap public mapping
+  local pending = DoomFrequencyBroadcaster.pending
+  DoomFrequencyBroadcaster.pending = {}
+
+  for frequency, msgs in pairs(pending) do
+    local channel = DoomFrequencyBroadcaster.getAmateurChannel(frequency)
+    if channel then
+      local script = channel:getRadioScript(DoomFrequencyBroadcaster.script)
+      local broadcast = script:getBroadcastWithID(DoomFrequencyBroadcaster.bc)
+
+      --TODO overlapping messages will be overriden.
+      --Instead, should get last broadcasted line for the script, and append
+      broadcast:getLines():clear()
+
+      for _, m in ipairs(msgs) do
+        local line = RadioLine.new(m.msg, m.color.red, m.color.green, m.color.blue)
+
+        broadcast:AddRadioLine(line)
+
+        DoomFrequencyUtils.log("broadcast(" .. tostring(frequency) .. "): " .. m.msg)
+      end
+
+      broadcast:resetLineCounter(true)
+
+      script:Reset()
+
+      channel:setActiveScript(DoomFrequencyBroadcaster.script, 0)
+      channel:LoadAiringBroadcast(DoomFrequencyBroadcaster.bc, 0)
+      channel:update()
+    end
+  end
 end

@@ -1,6 +1,7 @@
 local function onEveryTenMinutes()
   DoomFrequencyRelayer.pulse()
   DoomFrequencyRelayer.lockAndExecuteDispatch(DoomFrequencyBroadcaster)
+  DoomFrequencyBroadcaster.flush()
 end
 
 local function onClientCommand(module, command, player, args)
