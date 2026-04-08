@@ -1,9 +1,16 @@
 version=1
 id=3697471948
 title=DoomFrequency
-description=A radio communication enhancement.
+description=Radio relayer mod that will connect players with other players, and AI powered NPCs.
+description=
+description=A relationship status with the NPC is tracked, and as you improve your relationship with them individually, the quality of the replies  will improve. With enough Karma, you could also schedule dedicated conversations.
+description=
+description=Currently we have a single NPC, Silas Vance, and he wires in every day at 10:00, 14:00, and 19:00.
+description=You can just tune-in with a two-way radio device (i.e. Walkie Talkie) to 108Mhz at this appointed time, and he will be listening and replying.
+description=However, he's very sensitive about inquiries over his location. If you try to trick him into revealing that, your karma will severely drop.
 description=
 description=https://doomfrequency.fm/
 description=https://github.com/codx-dev/doom-frequency-mod
+description=https://theindiestone.com/forums/index.php?/topic/93801-b42-doomfrequency-ai-powered-npcs/
 tags=Build 42;Realistic
 visibility=public
