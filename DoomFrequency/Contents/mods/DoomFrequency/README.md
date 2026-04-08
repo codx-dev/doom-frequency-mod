@@ -4,9 +4,7 @@ A Project Zomboid mod (Build 42.15+) that connects in-game radio communication t
 
 Currently, we have a single character, Silas Vance, available at 108Mhz every day, at 10am, 2pm, 7pm. If you have a good enough relationship with him, you can schedule a private conversation at some other frequency/day/time.
 
-https://github.com/user-attachments/assets/fd4ddb9a-fe35-4552-b5f7-47ed59b8f138
-
-![In-game radio UI showing DoomFrequency broadcast](https://github.com/user-attachments/assets/3466f6a2-03e6-47c8-b930-4b558259475f)
+https://github.com/user-attachments/assets/c423ef67-282a-4392-80ec-f8a7bd23f844
 
 ## Installing the mod
 
@@ -24,6 +22,7 @@ DOOMFREQUENCY_API_KEY="your-api-key" pipx run doom-frequency-relayer \
   {your-server-data-path}/mods/DoomFrequency/common
 ```
 
+![In-game radio UI showing DoomFrequency broadcast](https://github.com/user-attachments/assets/3466f6a2-03e6-47c8-b930-4b558259475f)
 
 #### indifferentbroccoli pz server example
 
