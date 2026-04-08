@@ -4,7 +4,7 @@ import os
 
 import httpx
 
-AUTH_URL = "https://doomfrequency.fm/auth/jwt"
+AUTH_URL = "https://doomfrequency.fm/pub/jwt"
 
 
 class MissingCredentialsError(RuntimeError):

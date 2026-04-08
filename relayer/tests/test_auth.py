@@ -33,7 +33,7 @@ async def test_fetch_jwt_success():
 
     assert token == "jwt-abc-123"
     mock_client.post.assert_called_once_with(
-        "https://doomfrequency.fm/auth/jwt", json={"api_key": "my-api-key"}
+        "https://doomfrequency.fm/pub/jwt", json={"api_key": "my-api-key"}
     )
 
 

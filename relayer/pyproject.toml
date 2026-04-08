@@ -1,6 +1,6 @@
 [project]
 name = "doom-frequency-relayer"
-version = "0.1.0"
+version = "0.1.1"
 authors = [{ name = "Victor Lopez", email = "vhrlopes@gmail.com" }]
 description = "DoomFrequency communication relayer"
 readme = "README.md"
